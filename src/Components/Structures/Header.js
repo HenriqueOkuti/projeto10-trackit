@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
-export default function Header() {
+export default function Header({image}) {
     return (
         <PageHeader>
             <HeaderLogo>TrackIt</HeaderLogo>
             <AvatarContainer>
                 <AvatarBackground src="https://color.adobe.com/media/theme/92471.png" alt="alt text"></AvatarBackground>
-                <Avatar src="https://upload.wikimedia.org/wikipedia/en/thumb/3/3b/SpongeBob_SquarePants_character.svg/640px-SpongeBob_SquarePants_character.svg.png" alt="alt text"></Avatar>
+                <Avatar src={image} alt="alt text"></Avatar>
             </AvatarContainer>
         </PageHeader>
     );

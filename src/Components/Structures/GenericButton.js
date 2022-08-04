@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export default function GenericButton({ text }) {
+export default function GenericButton({ disabled, text }) {
     return (
         <>
-            <Button>
+            <Button disabled={disabled}>
                 <ButtonText>{text}</ButtonText>
             </Button>
         </>
@@ -22,6 +22,9 @@ const Button = styled.button`
 `;
 
 const ButtonText = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
     height: 26px;
     font-family: 'Lexend Deca';

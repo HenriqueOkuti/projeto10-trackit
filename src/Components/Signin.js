@@ -1,6 +1,7 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import GenericButton from "./Structures/GenericButton";
 import InputField from "./Structures/InputField";
@@ -11,32 +12,79 @@ export default function Signin() {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [photo, setPhoto] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    const [failure, setFailure] = useState(false);
+    const [incomplete, setIncomplete] = useState(false);
+    let navigate = useNavigate();
 
     const info = {
         email: email,
-        password: password,
         name: name,
-        photo: photo
+        image: photo,
+        password: password
     }
+
+    function verifyCache(){
+        if (localStorage.getItem('email') !== null){
+            navigate('/habitos');
+        }
+        return;
+    }
+
+    useEffect(() => {verifyCache()});
 
     function SendSignIn(event) {
-        console.log(info);
         event.preventDefault();
+        setDisabled(!disabled);
+        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', info);
+        request.then(PostSignInSuccess);
+        request.catch(PostSignInFailure);
     }
 
+    function PostSignInSuccess(event) {
+        console.log("Sucesso");
+        console.log(event.data);
+
+        localStorage.setItem('email', event.data.email)
+        localStorage.setItem('id', event.data.id)
+        localStorage.setItem('image', event.data.image)
+        localStorage.setItem('name', event.data.name)
+        localStorage.setItem('password', event.data.password)
+        localStorage.setItem('token', event.data.token)
+
+        navigate("/habitos");
+    }
+    function PostSignInFailure(event) {
+        console.log("Falha");
+        console.log(event);
+        setFailure(!failure);
+    }
+
+    if (failure) {
+        setDisabled(!disabled);
+        setIncomplete(!incomplete);
+        setFailure(!failure);
+    }
+
+    if (incomplete) {
+        console.log("incomplete");
+        alert("Não foi possível realizar seu cadastro! Tente novamente com outras informações");
+        setIncomplete(!incomplete);
+    }
+
+    console.log("Renderizacao")
     return (
         <>
             <PageLogo />
             <PageContainer>
                 <FormsContainer onSubmit={SendSignIn}>
-                    <InputField type='email' text={'email'} setData={setEmail}></InputField>
-                    <InputField type='password' text={'senha'} setData={setPassword}></InputField>
-                    <InputField type='name' text={'nome'} setData={setName}></InputField>
-                    <InputField type='photo' text={'foto'} setData={setPhoto}></InputField>
-                    <GenericButton text={<span>Cadastrar</span>}></GenericButton>
+                    <InputField info={info.email} disabled={disabled} type='email' text={'email'} setData={setEmail}></InputField>
+                    <InputField info={info.password} disabled={disabled} type='password' text={'senha'} setData={setPassword}></InputField>
+                    <InputField info={info.name} disabled={disabled} type='name' text={'nome'} setData={setName}></InputField>
+                    <InputField info={info.image} disabled={disabled} type='photo' text={'foto'} setData={setPhoto}></InputField>
+                    {!disabled ? <GenericButton disabled={disabled} text={<span>Cadastrar</span>}></GenericButton> : <GenericButton disabled={disabled} text={<ThreeDots color="#FFFFFF" height={80} width={80} />}></GenericButton>}
                 </FormsContainer>
                 <Link to={`/`}><Redirect>Já tem uma conta? Faça login!</Redirect></Link>
-                <ThreeDots color="#00BFFF" height={80} width={80} />
             </PageContainer>
         </>
     );

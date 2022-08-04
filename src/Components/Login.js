@@ -1,39 +1,86 @@
+import axios from "axios";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ThreeDots } from "react-loader-spinner";
 import GenericButton from "./Structures/GenericButton";
 import InputField from "./Structures/InputField";
 import PageLogo from "./Structures/PageLogo";
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 
 export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [disabled, setDisabled] = useState(false);
+    const [failure, setFailure] = useState(false);
+    const [incomplete, setIncomplete] = useState(false);
+    let navigate = useNavigate();
 
     const info = {
         email: email,
         password: password,
     }
 
-    function SendLogin(event) {
-        console.log(info);
-        event.preventDefault();
+    function verifyCache(){
+        if (localStorage.getItem('email') !== null){
+            navigate('/habitos');
+        }
+        return;
     }
 
-    //console.log(info);
+    useEffect(() => {verifyCache()});
+
+    function SendLogin(event) {
+        event.preventDefault();
+        setDisabled(!disabled);
+        console.log(info);
+        const request = axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login', info);
+        request.then(PostLoginSuccess);
+        request.catch(PostLoginFailure);
+
+    }
+
+    function PostLoginSuccess(event) {
+        console.log("Sucesso");
+        console.log(event.data);
+
+        localStorage.setItem('email', event.data.email)
+        localStorage.setItem('id', event.data.id)
+        localStorage.setItem('image', event.data.image)
+        localStorage.setItem('name', event.data.name)
+        localStorage.setItem('password', event.data.password)
+        localStorage.setItem('token', event.data.token)
+
+        navigate("/habitos");
+    }
+
+    function PostLoginFailure(event) {
+        console.log("Falha");
+        console.log(event);
+        setFailure(!failure);
+    }
+
+    if (failure) {
+        setDisabled(!disabled);
+        setIncomplete(!incomplete);
+        setFailure(!failure);
+    }
+
+    if (incomplete) {
+        console.log("incomplete");
+        alert("Não foi possível realizar seu login! Verifique as informações");
+        setIncomplete(!incomplete);
+    }
 
     return (
         <>
             <PageLogo />
             <PageContainer>
                 <FormsContainer onSubmit={SendLogin}>
-                    <InputField type='email' text={'email'} setData={setEmail}></InputField>
-                    <InputField type='password' text={'senha'} setData={setPassword}></InputField>
-                    <GenericButton text={<span>Entrar</span>}></GenericButton>
+                    <InputField info={info.email} disabled={disabled} type='email' text={'email'} setData={setEmail}></InputField>
+                    <InputField info={info.password} disabled={disabled} type='password' text={'senha'} setData={setPassword}></InputField>
+                    {!disabled ? <GenericButton disabled={disabled} text={<span>Entrar</span>}></GenericButton> : <GenericButton disabled={disabled} text={<ThreeDots color="#FFFFFF" height={80} width={80} />}></GenericButton>}
                 </FormsContainer>
                 <Link to={`/cadastro`}><Redirect>Não tem uma conta? Cadastre-se!</Redirect></Link>
-                <ThreeDots color="#00BFFF" height={80} width={80} />
             </PageContainer>
         </>
     );

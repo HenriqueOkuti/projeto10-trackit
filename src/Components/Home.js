@@ -3,14 +3,23 @@ import styled from "styled-components";
 import Footer from "./Footer";
 import Background from "./Structures/Background";
 import Header from "./Structures/Header";
-import InputField from "./Structures/InputField";
 import UserAddHabit from "./UserAddHabit";
 
 export default function Home() {
+    const userInfo = {
+        email: localStorage.getItem('email'),
+        id: localStorage.getItem('id'),
+        image: localStorage.getItem('image'),
+        name: localStorage.getItem('name'),
+        password: localStorage.getItem('password'),
+        token: localStorage.getItem('token')
+    };
+
+    console.log(userInfo);
     return (
         <>
             <Background></Background>
-            <Header></Header>
+            <Header image={userInfo.image}></Header>
             <HabitsContent></HabitsContent>
             <Footer></Footer>
         </>
