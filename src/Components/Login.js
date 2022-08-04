@@ -1,24 +1,52 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { ThreeDots } from "react-loader-spinner";
 import GenericButton from "./Structures/GenericButton";
 import InputField from "./Structures/InputField";
 import PageLogo from "./Structures/PageLogo";
+import { useState } from "react";
+
 
 export default function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const info = {
+        email: email,
+        password: password,
+    }
+
+    function SendLogin(event) {
+        console.log(info);
+        event.preventDefault();
+    }
+
+    //console.log(info);
+
     return (
         <>
             <PageLogo />
-            <FormsContainer>
-                <InputField text={'e-mail'}></InputField>
-                <InputField text={'senha'}></InputField>
-                <GenericButton text={<span>Entrar</span>}></GenericButton>
+            <PageContainer>
+                <FormsContainer onSubmit={SendLogin}>
+                    <InputField type='email' text={'email'} setData={setEmail}></InputField>
+                    <InputField type='password' text={'senha'} setData={setPassword}></InputField>
+                    <GenericButton text={<span>Entrar</span>}></GenericButton>
+                </FormsContainer>
                 <Link to={`/cadastro`}><Redirect>Não tem uma conta? Cadastre-se!</Redirect></Link>
-            </FormsContainer>
+                <ThreeDots color="#00BFFF" height={80} width={80} />
+            </PageContainer>
         </>
     );
 }
 
-const FormsContainer = styled.div`
+const PageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+
+const FormsContainer = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;

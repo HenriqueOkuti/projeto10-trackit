@@ -1,3 +1,5 @@
+import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import GenericButton from "./Structures/GenericButton";
@@ -5,28 +7,54 @@ import InputField from "./Structures/InputField";
 import PageLogo from "./Structures/PageLogo";
 
 export default function Signin() {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [photo, setPhoto] = useState("");
+
+    const info = {
+        email: email,
+        password: password,
+        name: name,
+        photo: photo
+    }
+
+    function SendSignIn(event) {
+        console.log(info);
+        event.preventDefault();
+    }
+
     return (
         <>
             <PageLogo />
-            <FormsContainer>
-                <InputField text={'e-mail'}></InputField>
-                <InputField text={'senha'}></InputField>
-                <InputField text={'nome'}></InputField>
-                <InputField text={'foto'}></InputField>
-                <GenericButton text={<span>Cadastrar</span>}></GenericButton>
+            <PageContainer>
+                <FormsContainer onSubmit={SendSignIn}>
+                    <InputField type='email' text={'email'} setData={setEmail}></InputField>
+                    <InputField type='password' text={'senha'} setData={setPassword}></InputField>
+                    <InputField type='name' text={'nome'} setData={setName}></InputField>
+                    <InputField type='photo' text={'foto'} setData={setPhoto}></InputField>
+                    <GenericButton text={<span>Cadastrar</span>}></GenericButton>
+                </FormsContainer>
                 <Link to={`/`}><Redirect>Já tem uma conta? Faça login!</Redirect></Link>
-            </FormsContainer>
+                <ThreeDots color="#00BFFF" height={80} width={80} />
+            </PageContainer>
         </>
     );
 }
 
-const FormsContainer = styled.div`
+const PageContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const FormsContainer = styled.form`
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 30px 0 0 0;
     font-family: 'Lexend Deca', sans-serif;
-`;
+`
 
 const Redirect = styled.div`
     width: 232px;

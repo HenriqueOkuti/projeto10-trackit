@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-export default function InputField({ text }) {
+export default function InputField({ type, text, setData }) {
     return (
         <>
-            <UserInput placeholder={text}></UserInput>
+            <UserInput type={type} placeholder={text} onChange={e => setData(e.target.value)} ></UserInput>
         </>
     );
 }

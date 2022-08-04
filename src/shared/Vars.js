@@ -1,5 +1,4 @@
 import Playball from './Playball/Playball-Regular.ttf';
-//import LexendDeca from './Lexend_Deca/static/LexendDeca-Regular.ttf';
 import LexendDeca from './Lexend_Deca/LexendDeca-VariableFont_wght.ttf';
 import { createGlobalStyle } from 'styled-components';
 

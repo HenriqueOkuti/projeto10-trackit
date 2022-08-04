@@ -26,7 +26,7 @@ const LogoImage = styled.img`
 `;
 
 const TitleText = styled.div`
-    font-family: 'Playball';
+    font-family: 'Playball', sans-serif;
     font-style: normal;
     font-weight: 400;
     font-size: 70px;

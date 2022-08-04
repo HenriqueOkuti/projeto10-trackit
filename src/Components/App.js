@@ -6,7 +6,6 @@ import Home from "./Home";
 import Today from "./Today";
 import Timeline from "./Timeline";
 
-
 export default function App() {
     return (
         <>
