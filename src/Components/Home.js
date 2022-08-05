@@ -1,19 +1,107 @@
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { createContext, useEffect, useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
 import Footer from "./Footer";
 import Background from "./Structures/Background";
 import Header from "./Structures/Header";
 import UserAddHabit from "./UserAddHabit";
+import UserHabitContainer from "./UserHabitContainer";
+
+const userInfo = {
+    email: localStorage.getItem('email'),
+    id: localStorage.getItem('id'),
+    image: localStorage.getItem('image'),
+    name: localStorage.getItem('name'),
+    password: localStorage.getItem('password'),
+    token: localStorage.getItem('token')
+};
+
+export const UserContext = createContext(userInfo);
 
 export default function Home() {
-    const userInfo = {
-        email: localStorage.getItem('email'),
-        id: localStorage.getItem('id'),
-        image: localStorage.getItem('image'),
-        name: localStorage.getItem('name'),
-        password: localStorage.getItem('password'),
-        token: localStorage.getItem('token')
-    };
+    const [userHabits, setUserHabits] = useState([]);
+    const [loaded, setLoaded] = useState([]);
+
+    function HabitsContent() {
+        const [add, setAdd] = useState(true);
+        const [hasHabits, setHasHabits] = useState(false);
+
+        return (
+            <ContentContainer>
+                <TitleContainer>
+                    <Title>
+                        Meus hábitos
+                    </Title>
+                    <AddHabit onClick={() => setAdd(!add)}>
+                        <ButtonIcon>+</ButtonIcon>
+                    </AddHabit>
+                </TitleContainer>
+                <HabitsContainer>
+                    {!add ? <UserAddHabit add={add} setAdd={setAdd} /> : <></>}
+                    <VerifyHabits />
+                </HabitsContainer>
+            </ContentContainer>
+        );
+    }
+
+    function VerifyHabits() {
+        const config = {
+            headers: {
+                "Authorization": `Bearer ${userInfo.token}`
+            }
+        }
+        if (loaded) {
+            console.log("Entrou no axios");
+            const promise = axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config);
+            promise.then(handleSuccess)
+            promise.catch(handleFailure)
+        }
+        console.log("Saiu do use Effect");
+        return (RenderHabits());
+    }
+
+    function RenderHabits() {
+        if (!loaded) {
+            if (userHabits === []) {
+                return (
+                    <DefaultText>
+                        Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+                    </DefaultText>
+                );
+            }
+            return (
+                <div>
+                    {userHabits.map((e, i) => (<UserHabitContainer key={i} habit={e} />))}
+                </div>
+            );
+        }
+        else {
+            return (
+                <DefaultLoader>
+                    <ThreeDots color="#126BA5" height={80} width={80} />
+                </DefaultLoader>
+            );
+        }
+    }
+
+
+    function handleSuccess(event) {
+        console.log("Sucesso");
+        console.log(event.data);
+        setUserHabits(event.data);
+        setLoaded(!loaded);
+    }
+
+    function handleFailure(event) {
+        console.log("Falha");
+        console.log(event);
+        return (
+            <DefaultText>
+                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
+            </DefaultText>
+        );
+    }
 
     console.log(userInfo);
     return (
@@ -26,42 +114,11 @@ export default function Home() {
     );
 }
 
-function HabitsContent() {
-    const [add, setAdd] = useState(true);
-    const [hasHabits, setHasHabits] = useState(false);
-    return (
-        <ContentContainer>
-            <TitleContainer>
-                <Title>
-                    Meus hábitos
-                </Title>
-                <AddHabit onClick={() => setAdd(!add)}>
-                    <ButtonIcon>+</ButtonIcon>
-                </AddHabit>
-            </TitleContainer>
-            <HabitsContainer>
-                {add ? <UserAddHabit add={add} setAdd={setAdd} /> : <></>}
-                <VerifyHabits hasHabits={hasHabits} />
-            </HabitsContainer>
-        </ContentContainer>
-    );
-}
-
-function VerifyHabits({ hasHabits }) {
-    if (hasHabits) {
-        return (
-            <></>
-        );
-    }
-    else {
-        return (
-            <DefaultText>
-                Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!
-            </DefaultText>
-        );
-    }
-
-}
+const DefaultLoader = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`
 
 const ContentContainer = styled.div`
     width: 100vw;

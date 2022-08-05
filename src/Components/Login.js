@@ -21,7 +21,7 @@ export default function Login() {
     }
 
     function verifyCache(){
-        if (localStorage.getItem('email') !== null){
+        if (localStorage.getItem('token') !== null && localStorage.getItem('token') !== 'undefined'){
             navigate('/habitos');
         }
         return;

@@ -25,7 +25,7 @@ export default function Signin() {
     }
 
     function verifyCache(){
-        if (localStorage.getItem('email') !== null){
+        if (localStorage.getItem('token') !== null){
             navigate('/habitos');
         }
         return;
@@ -52,7 +52,7 @@ export default function Signin() {
         localStorage.setItem('password', event.data.password)
         localStorage.setItem('token', event.data.token)
 
-        navigate("/habitos");
+        navigate("/");
     }
     function PostSignInFailure(event) {
         console.log("Falha");

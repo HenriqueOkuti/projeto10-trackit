@@ -1,33 +1,108 @@
+import axios from "axios";
 import { useState } from "react";
+import { ThreeDots } from "react-loader-spinner";
 import styled from "styled-components";
+import { UserContext } from "./Home";
 import InputField from "./Structures/InputField";
 
-export default function UserAddHabit({add, setAdd}) {
+export default function UserAddHabit({ add, setAdd }) {
     const days = [['D', 'Domingo'], ['S', 'Segunda'], ['T', 'Terça'], ['Q', 'Quarta'], ['Q', 'Quinta'], ['S', 'Sexta'], ['S', 'Sábado']];
+    const [name, setName] = useState('');
+    const [habitname, setHabitName] = useState('');
+    const [habitdays, setHabitDays] = useState([]);
+    const [disabled, setDisabled] = useState(false);
+    const [submit, setSubmit] = useState(false);
+    const [submitted, setSubmitted] = useState(false);
+
+    const newhabit = {
+        name: habitname,
+        days: habitdays
+    }
+
+    if (submitted) {
+        setSubmit(!submit);
+        setDisabled(!disabled);
+        setSubmitted(!submitted);
+    }
+
+
     return (
         <UserAddContainer>
             <InputContainer>
-                <InputField type='name' text={'Nome do hábito'} ></InputField>
+                <InputField info={newhabit.name} disabled={disabled} type='name' text={'Nome do hábito'} setData={setHabitName}></InputField>
                 <DaysContainer>
-                    {days.map((e, i) => AddDay(e, i))}
+                    {days.map((e, i) => AddDay(e, i, disabled))}
                 </DaysContainer>
             </InputContainer>
             <EndContainer>
-                <Cancel onClick={() => setAdd(!add)}>
+                <Cancel onClick={() => disabled ? '' : setAdd(!add)}>
                     Cancelar
                 </Cancel>
-                <Save>
-                    Salvar
-                </Save>
+                {submit ? <Save><ThreeDots color="#FFFFFF" height={30} width={60} /></Save> : <Save onClick={() => { setDisabled(!disabled); setSubmit(!submit); handleSubmit() }}>Salvar</Save>}
             </EndContainer>
         </UserAddContainer>
     );
 
-    function AddDay(day, index) {
+    function handleSubmit() {
+        console.log("Handle submit");
+        console.log(newhabit);
+        const userInfo = UserContext._currentValue;
+
+        console.log(UserContext);
+
+        const config = {
+            method: 'post',
+            url: 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits',
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+            body: {
+                name: newhabit.name,
+                days: newhabit.days.sort((a,b)=>a-b)
+            }
+        }
+
+        console.log(config);
+
+        const request = axios.post(config.url, config.body, config);
+        request.then(HandleSuccess);
+        request.catch(HandleFailure);
+
+    }
+
+    function HandleSuccess(event) {
+        console.log('Sucesso');
+        console.log(event);
+        setAdd(!add);
+        return setSubmitted(!submitted);
+    }
+
+    function HandleFailure(event) {
+        console.log('Falha');
+        console.log(event);
+
+        return setSubmitted(!submitted);
+    }
+
+    function AddDay(day, index, disabled) {
         const [clicked, setClicked] = useState(false);
         return (
-            <SmallButton key={index} selected={clicked} onClick={() => { console.log(day[1]); setClicked(!clicked) }}>{day[0]}</SmallButton>
+            <SmallButton disabled={disabled} key={index} selected={clicked} onClick={() => { pushDays(index); setClicked(!clicked) }}>{day[0]}</SmallButton>
         );
+    }
+
+    function pushDays(day) {
+        if (habitdays.includes(day)) {
+            let arrayaux = habitdays;
+            let index = arrayaux.findIndex((e) => e === day);
+            arrayaux.splice(index, index + 1);
+            setHabitDays(arrayaux);
+        }
+        else {
+            let arrayaux = habitdays;
+            arrayaux.push(day);
+            setHabitDays(arrayaux);
+        }
     }
 }
 
@@ -73,6 +148,8 @@ const SmallButton = styled.button`
     background: ${selected => selected.selected ? '#CFCFCF' : '#FFFFFF'};
     border: 1px solid #D5D5D5;
     border-radius: 5px;
+
+    color: ${selected => selected.selected ? '#FFFFFF' : '#DBDBDB'};
 
 `
 

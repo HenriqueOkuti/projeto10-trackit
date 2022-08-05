@@ -1,9 +1,10 @@
 import styled from "styled-components";
 
 export default function InputField({ info, disabled, type, text, setData }) {
+    // console.log(info, disabled, type, text, setData);
     return (
         <>
-            <UserInput required={true} minLength={3} onChange={e => e.info = e.target.value} disabled={disabled} type={type} placeholder={text} onChange={e => setData(e.target.value)} ></UserInput>
+            <UserInput required={true} minLength={3} disabled={disabled} type={type} placeholder={text} onChange={e => {e.info = e.target.value ;setData(e.target.value)}} ></UserInput>
         </>
     );
 }

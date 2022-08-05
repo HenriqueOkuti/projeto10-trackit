@@ -3,7 +3,7 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
 export default function Footer() {
-    const percentage = 80;
+    const percentage = 50;
 
     return (
         <FooterContainer>
