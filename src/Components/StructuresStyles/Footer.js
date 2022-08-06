@@ -1,29 +1,38 @@
 import styled from "styled-components";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import { Link } from "react-router-dom";
 
-export default function Footer() {
-    const percentage = 50;
+export default function Footer({userprogress}) {
+    let percentage = userprogress;
 
     return (
         <FooterContainer>
-            <RedirectHabits>Hábitos</RedirectHabits>
+            <Link to={"/habitos"} >
+                <RedirectHabits>Hábitos</RedirectHabits>
+            </Link>
+
             <TodayContainer>
-                <BlueBackground></BlueBackground>
-                <RedirectToday>
-                    <CircularProgressbar
-                        styles={buildStyles({
-                            pathColor: `#FFFFFF`,
-                            textColor: '#FFFFFF',
-                            trailColor: '#52B6FF',
-                            backgroundColor: '#52B6FF',
-                        })}
-                        value={percentage}
-                        text={`${percentage}%`}
-                    />
-                </RedirectToday>
+                <Link to={"/hoje"} >
+                    <BlueBackground></BlueBackground>
+                    <RedirectToday>
+                        <CircularProgressbar
+                            styles={buildStyles({
+                                pathColor: `#FFFFFF`,
+                                textColor: '#FFFFFF',
+                                trailColor: '#52B6FF',
+                                backgroundColor: '#52B6FF',
+                            })}
+                            value={percentage}
+                            text={`${percentage}%`}
+                        />
+                    </RedirectToday>
+                </Link>
             </TodayContainer>
-            <RedirectTimeline>Histórico</RedirectTimeline>
+
+            <Link to={"/historico"} >
+                <RedirectTimeline>Histórico</RedirectTimeline>
+            </Link>
 
         </FooterContainer>
     );
@@ -32,6 +41,7 @@ export default function Footer() {
 const FooterContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
     position: fixed;
     bottom: 0;
     left: 0;

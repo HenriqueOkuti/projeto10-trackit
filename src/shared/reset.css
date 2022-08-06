@@ -157,3 +157,7 @@ input[type="reset"] {
   text-shadow: inherit;
   text-rendering: inherit;
 }
+
+a {
+  text-decoration: none;
+}

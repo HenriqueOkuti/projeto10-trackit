@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import FontStyles from "../shared/Vars";
-import Login from "./Login";
-import Signin from "./Signin";
-import Home from "./Home";
-import Today from "./Today";
-import Timeline from "./Timeline";
+import Home from './Pages/Home/Home';
+import Login from './Pages/Login/Login';
+import Signin from './Pages/Signin/Signin';
+import Timeline from './Pages/Timeline/Timeline';
+import Today from './Pages/Today/Today';
 
 export default function App() {
     return (
