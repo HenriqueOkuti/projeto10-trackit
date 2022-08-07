@@ -24,7 +24,7 @@ export default function Footer({userprogress}) {
                                 backgroundColor: '#52B6FF',
                             })}
                             value={percentage}
-                            text={`${percentage}%`}
+                            text={`Hoje`}
                         />
                     </RedirectToday>
                 </Link>

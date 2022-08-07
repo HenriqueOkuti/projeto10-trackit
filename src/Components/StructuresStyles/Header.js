@@ -50,6 +50,7 @@ const AvatarBackground = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 98.5px;
+    object-fit: cover;
 `
 
 const Avatar = styled.img`

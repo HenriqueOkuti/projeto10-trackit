@@ -10,7 +10,6 @@ export default function ListHabits({ userhabit, update, setUpdate }) {
     const days = [['D', 'Domingo'], ['S', 'Segunda'], ['T', 'Terça'], ['Q', 'Quarta'], ['Q', 'Quinta'], ['S', 'Sexta'], ['S', 'Sábado']];
 
     function AddDay(day, index, disabled = true) {
-        //const [selected, setSelected] = useState(false);
         if (userhabit.days.includes(index)) {
             disabled = false;
         }
@@ -55,16 +54,12 @@ export default function ListHabits({ userhabit, update, setUpdate }) {
     function handleSuccess(event) {
         console.log("Success");
         console.log(event);
-        //Upon success must close box and update list
-        //its not working, must come back to this later
         setUpdate(!update);
     }
 
     function handleFailure(event) {
         console.log("Failure");
         console.log(event);
-        //Upon success must close box and update list
-        //its not working, must come back to this later
         setUpdate(!update);
     }
 
