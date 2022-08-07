@@ -3,7 +3,7 @@ import { CloseOutline, CheckmarkOutline } from 'react-ionicons';
 
 const PageContainer = styled.div`
 font-family: 'Lexend Deca', sans-serif;
-margin: 0 0 90px 0;
+margin: 0 0 110px 0;
 `
 
 const UserHabitsContainer = styled.div`

@@ -6,11 +6,12 @@ import { AddHabit, ButtonIcon, ContentContainer, DefaultText, HabitsContainer, P
 import ListHabits from './ListHabits';
 import UserAddHabits from './UserAddHabit';
 import axios from 'axios';
+import FooterProgress from '../../Functions/FooterProgress';
 
 export default function Home() {
     const [update, setUpdate] = useState(false);
     //UPDATE USER PROGRESS DEFAULT VALUE FROM SERVER
-    const [userprogress, setUserProgress] = useState(fetchScore());
+    const [userprogress, setUserProgress] = useState(0);
     const [userhabits, setUserhabits] = useState([]);
     let userToken = JSON.parse(localStorage.getItem('userToken'));
     let userData = JSON.parse(localStorage.getItem('userData'));
@@ -49,6 +50,8 @@ export default function Home() {
         );
     }
 
+    FooterProgress(userToken, update, setUpdate, userprogress, setUserProgress);
+
     function HabitsContent() {
         const [add, setAdd] = useState(false);
         return (
@@ -71,9 +74,7 @@ export default function Home() {
             </ContentContainer>
         );
     }
-    function fetchScore() {
-        return 20;
-    }
+
     return (
         <>
             <Background />

@@ -6,9 +6,11 @@ import Header from "../../StructuresStyles/Header";
 import { ContentContainer, DefaultText, PageContainer, Title, TitleContainer } from "../Home/HomeStyles";
 import { DefaultLoader } from "./TimelineStyles";
 import { ThreeDots } from "react-loader-spinner";
+import FooterProgress from "../../Functions/FooterProgress";
 
 export default function Timeline() {
-    const [userprogress, setUserProgress] = useState(fetchScore());
+    const [update, setUpdate] = useState(false);
+    const [userprogress, setUserProgress] = useState(0);
     let userToken = JSON.parse(localStorage.getItem('userToken'));
     let userData = JSON.parse(localStorage.getItem('userData'));
     const config = {
@@ -24,8 +26,9 @@ export default function Timeline() {
             .then(HandleSuccess)
             .catch(HandleFailure);
         setFetched(!fetched);
-    }, [])
+    }, [update])
 
+    FooterProgress(userToken, update, setUpdate, userprogress, setUserProgress);
 
     return (
         <>
@@ -37,10 +40,6 @@ export default function Timeline() {
             </PageContainer>
         </>
     );
-
-    function fetchScore() {
-        return 20;
-    }
 
     function HistoryContent() {
         if (fetched) {

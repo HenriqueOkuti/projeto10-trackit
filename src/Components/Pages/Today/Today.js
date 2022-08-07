@@ -7,6 +7,8 @@ import Footer from "../../StructuresStyles/Footer";
 import Header from "../../StructuresStyles/Header";
 import { ContentContainer, DefaultText, Title, TitleContainer } from "../Home/HomeStyles";
 import {
+    ContentContainerModified,
+    ColorChange,
     DynamicText,
     TitleContainerModified,
     DynamicSubtitle,
@@ -70,6 +72,11 @@ export default function Today() {
         }
         if (progress !== 0) {
             setUserProgress(Math.round((progress / total) * 100));
+            setUpdate(!update);
+        }
+        else {
+            setUserProgress(0);
+
         }
 
     }
@@ -79,9 +86,7 @@ export default function Today() {
         //console.log(event);
     }
 
-    function fetchScore() {
-        return 20;
-    }
+
 
     function Empty() {
         return (
@@ -91,7 +96,7 @@ export default function Today() {
         );
     }
 
-    function handleSelection(event, habit, previous,  selected, setSelected) {
+    function handleSelection(event, habit, previous, selected, setSelected) {
         event.preventDefault();
         setSelected(!selected);
         updateScore(habit.id, !previous);
@@ -103,12 +108,12 @@ export default function Today() {
         console.log(status);
 
         if (status) {
-            axios.post(`${BASE_URL}/habits/${id}/check`, {}, {headers: {Authorization: `Bearer ${userToken}`}})
+            axios.post(`${BASE_URL}/habits/${id}/check`, {}, { headers: { Authorization: `Bearer ${userToken}` } })
                 .then(() => setUpdate(!update))
                 .catch((response) => console.log(response));
         }
         else {
-            axios.post(`${BASE_URL}/habits/${id}/uncheck`, {}, {headers: {Authorization: `Bearer ${userToken}`}})
+            axios.post(`${BASE_URL}/habits/${id}/uncheck`, {}, { headers: { Authorization: `Bearer ${userToken}` } })
                 .then(() => setUpdate(!update))
                 .catch((response) => console.log(response));
         }
@@ -129,16 +134,22 @@ export default function Today() {
             }
         }, [selected])
 
-
         return (
+
             <Container key={index}>
                 <LeftContainer>
                     <HabitTitle>
                         {habit.name}
                     </HabitTitle>
                     <SequenceContainer>
-                        <span>Sequência atual: {selected ? sequence : sequence} dias</span>
-                        <span>Seu recorde: {habit.highestSequence} dias</span>
+                        <span>Sequência atual: {habit.done ?
+                            <ColorChange>{`${sequence} dias`}</ColorChange> :
+                            <>{`${sequence} dias`}</>}
+                        </span>
+                        <span>Seu recorde: {(habit.done && habit.highestSequence <= sequence) ?
+                            <ColorChange>{habit.highestSequence} dias</ColorChange> :
+                            <>{`${habit.highestSequence} dias`}</>}
+                        </span>
                     </SequenceContainer>
                 </LeftContainer>
                 <RightContainer>
@@ -186,7 +197,9 @@ export default function Today() {
                     </SubtitleContainer>
                 </SubHeaderContainer>
             </ContentContainer>
-            <Footer userprogress={userprogress} ></Footer>
+            <ContentContainerModified>
+                <Footer userprogress={userprogress} ></Footer>
+            </ContentContainerModified>
         </>
     );
 }

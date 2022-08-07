@@ -14,6 +14,7 @@ export default function Header({image}) {
 
 const PageHeader = styled.div`
     position: sticky;
+    z-index: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;

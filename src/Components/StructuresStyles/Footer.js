@@ -54,11 +54,12 @@ const FooterContainer = styled.div`
     font-size: 17.976px;
     line-height: 22px;
     text-align: center;
-    color: #52B6FF;
+    transform: translate(0, 0);
 `;
 
 const RedirectHabits = styled.div`
     margin: 5px 0 0 15px;
+    color: #52B6FF;
 `;
 
 const TodayContainer = styled.div`
@@ -68,10 +69,10 @@ const TodayContainer = styled.div`
 
 const BlueBackground = styled.div`
     position: absolute;
-    margin-left: -61%; 
-    top: -55px;
-    width: 110px;
-    height: 110px;
+    margin-left: -62%; 
+    top: -36px;
+    width: 92px;
+    height: 92px;
     background-color: #52B6FF;
     border-radius: 100px;
 
@@ -79,8 +80,8 @@ const BlueBackground = styled.div`
 
 const RedirectToday = styled.div`
     position: relative;
-    margin-left: -50%; 
-    top: -45px;
+    margin-left: -61%; 
+    top: -35px;
     width: 90px;
     height: 90px;
     color: #FFFFFF;
@@ -89,4 +90,5 @@ const RedirectToday = styled.div`
 
 const RedirectTimeline = styled.div`
     margin: 5px 15px 0 0;
+    color: #52B6FF;
 `;
