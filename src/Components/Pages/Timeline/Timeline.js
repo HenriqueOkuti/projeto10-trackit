@@ -78,7 +78,6 @@ export default function Timeline() {
     }
 
     function HandleSuccess(event) {
-        console.log(event);
         habits = event.data;
         if (habits !== undefined) {
             HistoryContent();
@@ -87,7 +86,6 @@ export default function Timeline() {
     }
 
     function HandleFailure(event) {
-        console.log(event);
         HistoryContent();
     }
 

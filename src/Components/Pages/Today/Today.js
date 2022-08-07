@@ -51,18 +51,14 @@ export default function Today() {
     }, [update, userhabits]);
 
     function hasUpdate(status) {
-        //console.log(status);
     }
     function handleSuccess(event) {
-        //console.log("Success");
         setUserhabits(event.data);
         setUpdate(true);
         manageData(userhabits);
     }
 
     function manageData(userhabits, previousValue = 0) {
-        //console.log(userhabits);
-        console.log("updating the dynamic text")
         let progress = previousValue;
         let total = userhabits.length;
         for (let i = 0; i < total; i++) {
@@ -82,8 +78,7 @@ export default function Today() {
     }
 
     function handleFailure(event) {
-        //console.log("Failure");
-        //console.log(event);
+        console.log(event);
     }
 
 
@@ -104,8 +99,6 @@ export default function Today() {
 
     function updateScore(id, status) {
         const BASE_URL = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/';
-
-        console.log(status);
 
         if (status) {
             axios.post(`${BASE_URL}/habits/${id}/check`, {}, { headers: { Authorization: `Bearer ${userToken}` } })

@@ -36,14 +36,12 @@ export default function Signin() {
             password: password
         }
         setUser(submitteddata);
-        console.log(submitteddata);
         axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up', submitteddata)
             .then(HandleSuccess)
             .catch(HandleFailure);
     }
 
     function HandleSuccess(event) {
-        console.log(event);
         navigate('/');
     }
 

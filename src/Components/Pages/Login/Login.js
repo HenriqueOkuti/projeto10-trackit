@@ -24,11 +24,9 @@ export default function Login() {
     const navigate = useNavigate();
 
     function verifyCache() {
-        console.log("Verifying cache");
         if (localStorage.getItem('userToken') !== null && localStorage.getItem('userToken') !== 'undefined') {
             navigate('/habitos');
         }
-        console.log("No local token identified");
         setCacheVerified(true);
     }
 
@@ -52,7 +50,6 @@ export default function Login() {
     }
 
     function HandleSuccess(event) {
-        console.log(event);
         UserToken.context = {
             id: event.data.id,
             token: event.data.token,

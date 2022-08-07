@@ -32,7 +32,6 @@ export default function Home() {
         hasUpdate(update);
     }
     function hasUpdate(status) {
-        //console.log(status);
     }
 
     function handleSuccess(event) {
